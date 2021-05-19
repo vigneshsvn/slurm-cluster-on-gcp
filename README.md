@@ -43,45 +43,44 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 ## Deploying the Slurm Cluster using Marketplace
 
 1. From the dropdown select the project where you want to deploy the Slurm Cluster. 
-<br>
 
 ![SchedMD-Slurm-GCP](/assets/images/1.png)
 
 <br>
+
 2. From the Navigation menu click on the Marketplace.
 
 ![SchedMD-Slurm-GCP](/assets/images/2.png)
 
 <br>
+
 3. In the search for **SchedMD-Slurm-GCP**.
-<br><br>
 
 ![SchedMD-Slurm-GCP](/assets/images/3.png)
 
 <br>
+
 4. From the search you will see the below result. 
-<br><br>
 
 ![SchedMD-Slurm-GCP](/assets/images/4.png)
 
 <br>
+
 5. Click on the **Schedmd-Slurm-GCP** from the result and Click **Launch**. 
-<br><br>
 
 ![SchedMD-Slurm-GCP](/assets/images/5.png)
 
 <br>
+
 6. Some of the options provide defaults, others require input. 
 
 <ul>
 <li>Enter the Deployment name, Cluster name.</li>
 <li>Select the Zone and Network interface where Slurm Cluster has to deployed.</li>
 </ul>
-<br>
 
 ![SchedMD-Slurm-GCP](/assets/images/6.png)
 
-<br>
 7. Configure Slurm Controller: 
 <ul>
 <li>Under Machine family section, Choose the <strong>Machine family</strong> as required.</li>
@@ -91,7 +90,6 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 
 ![SchedMD-Slurm-GCP](/assets/images/7.png)
 
-<br>
 8. Configure Slurm Login:
 <ul>
 <li>Click on SHOW SLUM LOGIN OPTIONS</li>
@@ -102,7 +100,6 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 
 ![SchedMD-Slurm-GCP](/assets/images/8.png)
 
-<br>
 9. Configure Slurm Compute Partition:
 <ul>
 <li>Enter the <strong>Name</strong> of the partition 1.</li>
@@ -117,7 +114,6 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 
 ![SchedMD-Slurm-GCP](/assets/images/9.png)
 
-<br>
 10. Adding additional Partition
 <ul>
 <li>By default, one partition is enabled. Check the box “Enable partition” under the “Slurm Compute Partition” sections to configure more partitions.</li>
@@ -125,5 +121,90 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 
 ![SchedMD-Slurm-GCP](/assets/images/10.png)
 
+11. When complete, click <strong>Deploy</strong>.
+
 <br>
-11. <strong> When complete, click “Deploy”. </strong>
+
+12. When the deployment is complete, you should see a check box saying deployment completed.
+
+![SchedMD-Slurm-GCP](/assets/images/11.png)
+
+<br>
+
+## Run a job using Slurm
+
+1. SSH to the Login node by clicking the <strong>SSH TO SLURM LOGIN NODE</strong> button.
+
+<br>
+
+2. Execute the <strong>sinfo</strong> command to view the status of our cluster's resources. You can see our <strong>10 nodes</strong>, dictated by the debug partition's <strong>"max_node_count" of 10</strong>, are marked as "idle~" (the node is in an idle and non-allocated mode, ready to be spun up).
+
+<img src="/assets/images/12.png" alt="SchedMD-Slurm-GCP" width="1000" height="750" />
+
+<br>
+<br>
+
+3. Next, execute the <strong>squeue</strong> command to view the status of our cluster's queue. We don't have any jobs running, so the contents of this command are empty.
+
+```shell
+JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+```
+
+> <br> <strong>Note:</strong> The Slurm commands "srun" and "sbatch" are used to run jobs that are put into the queue. "srun" runs parallel jobs, and can be used as a wrapper for mpirun. "sbatch" is used to submit a batch job to slurm, and can call srun once or many times in different configurations. "sbatch" can take batch scripts, or can be used with the –wrap option to run the entire job from the command line.
+<br>
+
+4. Run a Slurm Job and Scale the Cluster
+
+Create file <strong>example.sh</strong> using the below command
+
+```shell
+cat > example.sh << EOF 
+#!/bin/bash
+srun hostname
+EOF
+```
+
+Type <strong>ls</strong> to check the file is created. then run the following command to execute the batch job.
+
+```shell
+sbatch --nodes=2 example.sh
+```
+
+You will get an <strong>output</strong> like 
+
+```shell
+Submitted batch job 2
+```
+
+To view the job queue, type <strong>squeue</strong>
+
+You will likely see the job you executed listed like below:
+
+```shell
+JOBID PARTITION                               NAME      USER ST       TIME  NODES   NODELIST(REASON)
+    2     p1 slurm-test-cluster-compute-[0-1] username  R             0:10      2   gslurm-test-cluster-compute-0-[0-1]
+```
+
+<br>
+
+5. View the new compute nodes added on the Console.
+
+![SchedMD-Slurm-GCP](/assets/images/13.png)
+
+
+> <strong>Note:</strong> <br>
+<strong>sbatch</strong> is the Slurm command which runs Slurm batch scripts. [More Info](https://slurm.schedmd.com/sbatch.html).<br>
+<strong>srun</strong> is the Slurm command which runs commands in parallel. [More Info](https://slurm.schedmd.com/srun.html).<br>
+<strong>squeue</strong> is the Slurm queue monitoring command line tool. It lists all running jobs, and the resources they are associated with. [More Info](https://slurm.schedmd.com/squeue.html).<br>
+<strong>sinfo</strong> is the Slurm command which lists the information about the Slurm cluster. This lists the Slurm partition, availability, time limit, and current state of the nodes in the cluster. [More Info](https://slurm.schedmd.com/sinfo.html).
+<br>
+
+## Congratulations, you've run a job and scaled up your Slurm cluster on Google Cloud Platform! 
+
+You can use this model to run any variety of jobs, and it scales to hundreds of instances in minutes by simply requesting the nodes in Slurm
+
+> <br> NOTE: syslog and all Slurm logs can be viewed in GCP Console's Logs Viewer.
+<br>
+
+## Support
+Slurm Troubleshooting Guide: https://slurm.schedmd.com/troubleshoot.html 
