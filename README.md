@@ -1,6 +1,6 @@
 # Deploy an Auto-Scaling HPC Cluster with Slurm on Google Cloud Platform using Marketplace
 
-This tutorial shows how to deploy a auto-scaling Slurm cluster on Google Cloud Platform using Marketplace. 
+This tutorial shows how to deploy an auto-scaling Slurm cluster on Google Cloud Platform using Marketplace. 
 
 ## About Slurm
 
@@ -38,9 +38,91 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 </ul>
 
 <br>
+
 ## Deploying the Slurm Cluster using Marketplace
 
-From the dropdown select the project where you want to deploy the Slurm Cluster
+1. From the dropdown select the project where you want to deploy the Slurm Cluster. 
+<br>
 
-![Select the project](/assets/images/1.png)
-<img src="/assets/images/1.png" alt="Select the project"  width="800" height="200" />
+![SchedMD-Slurm-GCP](/assets/images/1.png)
+
+<br>
+2. From the Navigation menu click on the Marketplace.
+
+![SchedMD-Slurm-GCP](/assets/images/2.png)
+
+<br>
+3. In the search for **SchedMD-Slurm-GCP**.
+<br><br>
+
+![SchedMD-Slurm-GCP](/assets/images/3.png)
+
+<br>
+4. From the search you will see the below result. 
+<br><br>
+
+![SchedMD-Slurm-GCP](/assets/images/4.png)
+
+<br>
+5. Click on the **Schedmd-Slurm-GCP** from the result and Click **Launch**. 
+<br><br>
+
+![SchedMD-Slurm-GCP](/assets/images/5.png)
+
+<br>
+6. Some of the options provide defaults, others require input. 
+
+<ul>
+<li>Enter the Deployment name, Cluster name.</li>
+<li>Select the Zone and Network interface where Slurm Cluster has to deployed.</li>
+</ul>
+<br>
+
+![SchedMD-Slurm-GCP](/assets/images/6.png)
+
+<br>
+7. Configure Slurm Controller: 
+<ul>
+<li>Under Machine family section, Choose the <strong>Machine family</strong> as required.</li>
+<li>Choose the <strong>Machine type</strong> as required.</li>
+<li>Click on <strong>MORE</strong> and then Choose the <strong>Boot Disk Type</strong> and <strong>Size</strong> required. </li>
+</ul>
+
+![SchedMD-Slurm-GCP](/assets/images/7.png)
+
+<br>
+8. Configure Slurm Login:
+<ul>
+<li>Click on SHOW SLUM LOGIN OPTIONS</li>
+<li>Under Machine family section, Choose the <strong>Machine family</strong> as required.</li>
+<li>Choose the <strong>Machine type</strong> as required.</li>
+<li>Choose the <strong>Boot Disk Type</strong> and <strong>Size</strong> required. </li>
+</ul>
+
+![SchedMD-Slurm-GCP](/assets/images/8.png)
+
+<br>
+9. Configure Slurm Compute Partition:
+<ul>
+<li>Enter the <strong>Name</strong> of the partition 1.</li>
+<li>Set the <strong>Maximum Instance Count</strong>.</li>
+<li>Set the <strong>Number of Static nodes to create</strong> initially.</li>
+<li>Under Machine family section, Choose the <strong>COMPUTE-OPTIMISED</strong> Tab. Strongly recommend choosing a <strong>compute-optimized instances</strong>. 
+<li>Choose the <strong>Machine type</strong> as required.</li>
+<li>Click on <strong>MORE</strong> and then Choose the <strong>Boot Disk Type</strong> and <strong>Size</strong> required. </li>
+</ul>
+
+> To learn why compute optimized instances, read [Use compute-optimized instances](https://cloud.google.com/solutions/best-practices-for-using-mpi-on-compute-engine#use_compute-optimized_instances).
+
+![SchedMD-Slurm-GCP](/assets/images/9.png)
+
+<br>
+10. Adding additional Partition
+<ul>
+<li>By default, one partition is enabled. Check the box “Enable partition” under the “Slurm Compute Partition” sections to configure more partitions.</li>
+</ul>
+
+![SchedMD-Slurm-GCP](/assets/images/10.png)
+
+<br>
+11. <strong> When complete, click “Deploy”. </strong>
