@@ -23,6 +23,7 @@ Basic architectural diagram of a stand-alone Slurm Cluster in Google Cloud. Ref:
 > Learn More About Slurm at [Slurm Overview](https://slurm.schedmd.com/overview.html).
 
 <br>
+
 ## What you'll learn
 <ul>
 <li>How to deploy the Slurm Cluster using Marketplace</li>
